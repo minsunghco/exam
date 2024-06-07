@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massachusetts Permit Test Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz">
+        <div id="question-container" class="question">Question will appear here</div>
+        <div id="options-container" class="options"></div>
+        <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+        <div id="result" class="result"></div>
+        <button id="next-btn" class="next-btn" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    const quizQuestions = [
+        {
+            question: "What is the speed limit in a school zone in Massachusetts?",
+            options: ["20 mph", "25 mph", "30 mph", "35 mph"],
+            answer: "20 mph"
+        },
+        {
+            question: "What is the base fine for speeding up to 10 mph over the speed limit?",
+            options: ["$50", "$75", "$105", "$150"],
+            answer: "$105"
+        },
+        {
+            question: "How much is the additional fine for each mph over the first 10 mph in a speeding violation?",
+            options: ["$5", "$10", "$15", "$20"],
+            answer: "$10"
+        },
+        {
+            question: "What is the speed limit in a thickly settled or business district in Massachusetts?",
+            options: ["20 mph", "25 mph", "30 mph", "35 mph"],
+            answer: "30 mph"
+        },
+        {
+            question: "What is the fine for not wearing a seatbelt in Massachusetts?",
+            options: ["$10", "$25", "$50", "$100"],
+            answer: "$25"
+        },
+        {
+            question: "What is the penalty for a first offense of texting while driving for a driver under 18?",
+            options: ["$50 fine and 30-day suspension", "$100 fine and 60-day suspension", "$150 fine and 90-day suspension", "$200 fine and 120-day suspension"],
+            answer: "$100 fine and 60-day suspension"
+        },
+        {
+            question: "What happens to the fines for speeding in a work zone?",
+            options: ["They are halved", "They remain the same", "They are doubled", "They are tripled"],
+            answer: "They are doubled"
+        },
+        {
+            question: "What is the speed limit on a highway in Massachusetts?",
+            options: ["50 mph", "55 mph", "60 mph", "65 mph"],
+            answer: "50 mph"
+        },
+        {
+            question: "How long is the license suspension for a junior operator’s first offense of speeding?",
+            options: ["30 days", "60 days", "90 days", "120 days"],
+            answer: "90 days"
+        },
+        {
+            question: "How much is the fine for a second offense of texting while driving for a driver over 18?",
+            options: ["$100", "$150", "$200", "$250"],
+            answer: "$250"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function loadQuestion() {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        document.getElementById('question-container').textContent = currentQuestion.question;
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        currentQuestion.options.forEach(option => {
+            const optionElement = document.createElement('div');
+            optionElement.className = 'option';
+            optionElement.innerHTML = `<label><input type="radio" name="option" value="${option}"> ${option}</label>`;
+            optionsContainer.appendChild(optionElement);
+        });
+        document.getElementById('result').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+    }
+
+    function checkAnswer() {
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (!selectedOption) {
+            alert('Please select an answer!');
+            return;
+        }
+        const answer = selectedOption.value;
+        const resultElement = document.getElementById('result');
+        if (answer === quizQuestions[currentQuestionIndex].answer) {
+            resultElement.textContent = 'Correct!';
+            resultElement.className = 'result correct';
+        } else {
+            resultElement.textContent = `Incorrect! The correct answer is ${quizQuestions[currentQuestionIndex].answer}`;
+            resultElement.className = 'result incorrect';
+        }
+        resultElement.style.display = 'block';
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizQuestions.length) {
+            loadQuestion();
+        } else {
+            document.getElementById('quiz').innerHTML = '<h2>You have completed the quiz!</h2>';
+        }
+    }
+
+    window.onload = loadQuestion;
+</script>
+
+</body>
+</html>
